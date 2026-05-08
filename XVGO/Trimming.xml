@@ -1,5 +1,3 @@
 <linker>
-  <assembly fullname="XVGO">
-    <type fullname="XVGO.Pages.*" preserve="all" />
-  </assembly>
+  <assembly fullname="XVGO" preserve="all" />
 </linker>
