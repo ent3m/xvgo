@@ -1,11 +1,11 @@
-﻿@using XVGO.Services
+﻿@page "/"
+
+@using XVGO.Services
 
 @inject ISvgOptimizer SvgOptimizer
 @inject ISvgConverter SvgConverter
 @inject IClipboardService ClipboardService
 @inject IHistoryManager HistoryManager
-
-@page "/"
 
 <div class="grid-container">
 	<FluentStack Orientation="Orientation.Vertical" VerticalGap="4" Class="fill-max" Style="grid-column: 1; grid-row: 1;">
