@@ -1,0 +1,23 @@
+{
+  "name": "XVGO",
+  "short_name": "XVGO",
+  "id": "./",
+  "start_url": "./",
+  "display": "standalone",
+  "description": "SVG to XAML converter for .NET developers",
+  "background_color": "#ffffff",
+  "theme_color": "#4fa0ff",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ]
+}

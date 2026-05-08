@@ -1,0 +1,59 @@
+﻿@using XVGO.Models
+@implements IDialogContentComponent<ConversionSettings>
+
+<FluentDialogBody>
+	<FluentStack Orientation="Orientation.Vertical" VerticalGap="20" HorizontalAlignment="HorizontalAlignment.Center">
+		<FluentSelect Items="@(Enum.GetValues<OutputStrategy>())"
+					  @bind-SelectedOption="@Content.Strategy"
+					  OptionText="@(m => m.ToString())"
+					  Label="Output Strategy"
+					  OptionTitle="@GetStrategyDescription" />
+
+		<FluentSelect Items="@(Enum.GetValues<UsageContext>())"
+					  @bind-SelectedOption="@Content.Context"
+					  OptionText="@(m => m.ToString())"
+					  Label="Usage Context"
+					  OptionTitle="@GetContextDescription" />
+
+		<FluentCheckbox Label="Avalonia Compatibility" @bind-Value="@Content.AvaloniaCompatibility" title="Generate Avalonia-compatible XAML (StrokeLineCap, StreamGeometry, etc.)" />
+
+		<FluentSlider Label="Indent Spaces" Min="0" Max="8" Step="1" @bind-Value="@Content.IndentSpaces">
+			<FluentSliderLabel Position="0">0</FluentSliderLabel>
+			<FluentSliderLabel Position="2">2</FluentSliderLabel>
+			<FluentSliderLabel Position="4">4</FluentSliderLabel>
+			<FluentSliderLabel Position="8">8</FluentSliderLabel>
+		</FluentSlider>
+
+		<FluentDivider Role="DividerRole.Separator" />
+
+		<FluentCheckbox Label="Tab Indent" @bind-Value="@Content.TabIndent" title="Use tab character for indentation instead of spaces" />
+
+		<FluentCheckbox Label="Multi-line Properties" @bind-Value="@Content.MultiLine" title="Whether to place properties on multiple lines for better readability. Disable for more compact outputs." />
+
+		<FluentTextField Label="Current Color Value" @bind-Value="@Content.CurrentColorValue" title="Color value used when converting 'currentColor' to XAML" />
+
+		<FluentTextField Label="Resource Key" @bind-Value="@Content.DefaultKey" title="Default value for x:Key when output strategy is ResourceDictionary" />
+	</FluentStack>
+</FluentDialogBody>
+
+@code
+{
+	[Parameter]
+	public ConversionSettings Content { get; set; } = default!;
+
+	private static string GetStrategyDescription(OutputStrategy strategy) => strategy switch
+	{
+		OutputStrategy.Canvas => "Generate Viewbox + Canvas + Path\nCompatible with Avalonia UI, WPF, WinUI, Uno Platform",
+		OutputStrategy.DrawingBrush => "Generate Rectangle + DrawingBrush + GeometryDrawing\nCompatible with Avalonia UI and WPF",
+		OutputStrategy.DrawingImage => "Generate Image + DrawingImage + GeometryDrawing\nCompatible with Avalonia UI and WPF",
+		OutputStrategy.PathIcon => "Generate PathIcon or PathIconSource/StreamGeometry\nOptimized SVG must have exactly one element to generate a PathIcon\nCompatible with Avalonia UI, WinUI, Uno Platform",
+		_ => strategy.ToString()
+	};
+	
+	private static string GetContextDescription(UsageContext context) => context switch
+	{
+		UsageContext.Standalone => "To be placed inside a ContentControl, Panel, etc.",
+		UsageContext.ResourceDictionary => "To be placed inside a ResourceDictionary",
+		_ => context.ToString()
+	};
+}

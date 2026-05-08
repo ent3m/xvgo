@@ -1,0 +1,164 @@
+﻿@using XVGO.Services
+
+@inject ISvgOptimizer SvgOptimizer
+@inject ISvgConverter SvgConverter
+@inject IClipboardService ClipboardService
+@inject IHistoryManager HistoryManager
+
+@page "/"
+
+<div class="grid-container">
+	<FluentStack Orientation="Orientation.Vertical" VerticalGap="4" Class="fill-max" Style="grid-column: 1; grid-row: 1;">
+		<FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+			<FluentCard>
+				<FluentLabel><strong>SVG Input</strong></FluentLabel>
+			</FluentCard>
+			<FluentSpacer />
+			<FluentButton Appearance="Appearance.Lightweight" 
+				  		  IconEnd="@(new AppIcons.Upload())"
+						  Title="Open SVG file"
+						  Id="UploadButton">
+						  Open
+					  </FluentButton>
+			<FluentButton Appearance="Appearance.Lightweight"
+						  Title="Paste from clipboard"
+						  OnClick="PasteAndConvertAsync"
+						  IconEnd="@(new AppIcons.Paste())">
+						  Paste
+			</FluentButton>
+		</FluentStack>
+		<FluentTextArea @bind-Value="_inputSvg"
+						Placeholder="Paste SVG here..."
+						Spellcheck="false" />
+	</FluentStack>
+		
+	<FluentStack Orientation="Orientation.Vertical" VerticalGap="4" Class="fill-max" Style="grid-column: 3; grid-row: 1;">
+		<FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+			<FluentCard>
+				<FluentLabel><strong>XAML Output</strong></FluentLabel>
+			</FluentCard>
+			<FluentSpacer />
+			<FluentButton Appearance="Appearance.Lightweight"
+						  Title="Copy XAML to clipboard"
+						  Disabled="@string.IsNullOrEmpty(_convertedXaml)"
+						  OnClick="@(_ => ClipboardService.CopyAsync(_convertedXaml))"
+						  IconEnd="@(new AppIcons.Copy())">
+						  Copy
+			</FluentButton>
+		</FluentStack>
+		<FluentTextArea Value="@_convertedXaml"
+						ReadOnly="true"
+						Placeholder=@PlaceholderXaml />
+	</FluentStack>
+
+	<FluentButton Appearance="Appearance.Lightweight"
+				  Title="Convert SVG to XAML"
+				  OnClick="ConvertAsync"
+				  Disabled="@string.IsNullOrWhiteSpace(_inputSvg)"
+				  Style="grid-column: 2; grid-row: 2; align-self: center;">
+		<FluentIcon Value="@(new AppIcons.Convert())" />
+	</FluentButton>
+
+	<FluentStack Orientation="Orientation.Vertical" VerticalGap="4" Class="fill-max" Style="grid-column: 1; grid-row: 3;">
+		<FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+			<FluentCard>
+				<FluentLabel><strong>Optimized SVG</strong></FluentLabel>
+			</FluentCard>
+			<FluentSpacer />
+			<FluentButton Appearance="Appearance.Lightweight"
+						  Title="Copy optimized SVG to clipboard"
+						  Disabled="@string.IsNullOrEmpty(_optimizedSvg)"
+						  OnClick="@(_ => ClipboardService.CopyAsync(_optimizedSvg))"
+						  IconEnd="@(new AppIcons.Copy())">
+						  Copy
+			</FluentButton>
+		</FluentStack>
+		<FluentTextArea Value="@_optimizedSvg"
+						ReadOnly="true"
+						Placeholder=@PlaceholderSvg />
+	</FluentStack>
+
+	<FluentStack Orientation="Orientation.Vertical" VerticalGap="4" Class="fill-max" Style="grid-column: 3; grid-row: 3;"
+				 HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
+		@if (!string.IsNullOrEmpty(_optimizedSvg))
+		{
+			@((MarkupString)_optimizedSvg.Replace("<svg", "<svg width=\"100%\" height=\"100%\""))
+		}
+		else
+		{
+			<FluentLabel Style="opacity: 0.5;">SVG Preview</FluentLabel>
+		}
+	</FluentStack>
+
+	<FluentInputFile Mode="InputFileMode.Stream"
+					 DragDropZoneVisible="false"
+					 Multiple="false"
+					 AnchorId="UploadButton"
+					 MaximumFileSize="@(100 * 1024 * 1024)"
+					 Accept=".svg"
+					 OnCompleted="@HandleInputFile">
+	
+	</FluentInputFile>
+</div>
+
+@code
+	{
+	private string _inputSvg = string.Empty;
+	private string _optimizedSvg = string.Empty;
+	private string _convertedXaml = string.Empty;
+
+	private async Task HandleInputFile(IEnumerable<FluentInputFileEventArgs> files)
+	{
+		_optimizedSvg = string.Empty;
+		_convertedXaml = string.Empty;
+
+		var file = files.FirstOrDefault();
+		if (file == null || file.Stream == null)
+		{
+			if (file?.ErrorMessage is string error)
+				_convertedXaml = $"Error: {error}";
+			return;
+		}
+		using StreamReader reader = new(file.Stream);
+		_inputSvg = await reader.ReadToEndAsync();
+		await ConvertAsync();
+	}
+
+	private async Task PasteAndConvertAsync()
+	{
+		_inputSvg = await ClipboardService.PasteAsync();
+		await ConvertAsync();
+	}
+
+	private async Task ConvertAsync()
+	{
+		if (string.IsNullOrWhiteSpace(_inputSvg))
+			return;
+
+		_optimizedSvg = string.Empty;
+		_convertedXaml = string.Empty;
+
+		try
+		{
+			_optimizedSvg = await SvgOptimizer.OptimizeAsync(_inputSvg);
+			_convertedXaml = SvgConverter.Convert(_optimizedSvg);
+			HistoryManager.AddToHistory(_optimizedSvg, _convertedXaml);
+		}
+		catch (Exception ex)
+		{
+			_convertedXaml = $"Error: {ex.Message}";
+		}
+	}
+
+	private const string PlaceholderSvg = """
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+		<path fill="#87ceeb" d="m10 90 40-80 40 80Z"/>
+	</svg>
+	""";
+
+	private const string PlaceholderXaml = """
+	<Canvas x:Key="Icon" x:Shared="False" Width="100" Height="100">
+	    <Path Fill="#87CEEB" Data="F1 m10 90 40-80 40 80Z" />
+	</Canvas>
+	""";
+}

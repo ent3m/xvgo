@@ -1,0 +1,52 @@
+﻿@using XVGO.Models
+@using XVGO.Services
+@inject IClipboardService ClipboardService
+@implements IDialogContentComponent<IHistoryManager>
+
+<FluentDialogBody>
+	<FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
+		<FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center">
+			@if (!Content.History.Any())
+			{
+				<FluentLabel>Empty</FluentLabel>
+			}
+			else
+			{
+				@foreach (var entry in Content.History)
+				{
+					<FluentCard>
+						<FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Right">
+							@if (entry.AvaloniaCompatibility)
+							{
+								<FluentBadge Appearance="Appearance.Accent" Title="Avalonia compatible">
+									A
+								</FluentBadge>
+							}
+							<FluentBadge Appearance="Appearance.Neutral" Title="Output Strategy">
+								@entry.Strategy
+							</FluentBadge>
+							<FluentIcon Value="@(entry.Context == UsageContext.ResourceDictionary ? (Icon)new AppIcons.Dictionary() : (Icon)new AppIcons.Standalone())" />
+							<div style="width: 24px; height: 24px;">
+								@((MarkupString)entry.OptimizedSvg.Replace("<svg", "<svg width=\"100%\" height=\"100%\""))
+							</div>
+							<FluentButton OnClick="@(_ => ClipboardService.CopyAsync(entry.Xaml))" Appearance="Appearance.Lightweight" Title="Copy XAML">
+								<FluentIcon Value="@(new AppIcons.Copy())" />
+							</FluentButton>
+						</FluentStack>
+					</FluentCard>
+				}
+			}
+		</FluentStack>
+		<FluentDivider />
+		<FluentButton Disabled="@(!Content.History.Any())" OnClick="@Content.ClearHistory" Appearance="Appearance.Lightweight" >
+			<FluentIcon Value="@(new AppIcons.Trashcan())" />
+			<FluentLabel>Clear History</FluentLabel>
+		</FluentButton>
+	</FluentStack>
+</FluentDialogBody>
+
+@code
+{
+	[Parameter]
+	public IHistoryManager Content { get; set; } = null!;
+}

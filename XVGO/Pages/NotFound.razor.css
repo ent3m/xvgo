@@ -1,0 +1,61 @@
+.not-found-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 60px);
+    overflow: hidden;
+}
+
+.not-found-code {
+    font-size: clamp(6rem, 20vw, 12rem);
+    font-weight: 800;
+    line-height: 1;
+    color: var(--neutral-foreground-rest);
+    opacity: 0.15;
+    letter-spacing: -0.02em;
+    user-select: none;
+}
+
+.not-found-message {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    font-weight: 600;
+    color: var(--neutral-foreground-rest);
+    margin-top: -1rem;
+}
+
+.not-found-sub {
+    font-size: 1rem;
+    color: var(--neutral-foreground-hint);
+    margin: 0.5rem 0 1.5rem;
+    text-align: center;
+    max-width: 360px;
+}
+
+.not-found-dino {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: clamp(234px, 28.6vw, 390px);
+    pointer-events: none;
+    user-select: none;
+}
+
+.dino-spot {
+    fill: var(--accent-fill-rest);
+}
+
+.dino-eye {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: blink 3s infinite;
+}
+
+@keyframes blink {
+    0%, 90%, 100% {
+        transform: scaleY(1);
+    }
+    95% {
+        transform: scaleY(0.1);
+    }
+}
