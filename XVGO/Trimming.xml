@@ -1,0 +1,6 @@
+<linker>
+  <assembly fullname="XVGO">
+    <!-- Razor component referenced via typeof() in App.razor; not visible to the trimmer -->
+    <type fullname="XVGO.Pages.NotFound" preserve="all" />
+  </assembly>
+</linker>
