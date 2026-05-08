@@ -43,10 +43,10 @@
 
 	private static string GetStrategyDescription(OutputStrategy strategy) => strategy switch
 	{
-		OutputStrategy.Canvas => "Generate Viewbox + Canvas + Path\nCompatible with Avalonia UI, WPF, WinUI, Uno Platform",
+		OutputStrategy.Canvas => "Generate Viewbox + Canvas + Path\nCompatible with Avalonia UI, Uno Platform, WinUI, WPF",
 		OutputStrategy.DrawingBrush => "Generate Rectangle + DrawingBrush + GeometryDrawing\nCompatible with Avalonia UI and WPF",
 		OutputStrategy.DrawingImage => "Generate Image + DrawingImage + GeometryDrawing\nCompatible with Avalonia UI and WPF",
-		OutputStrategy.PathIcon => "Generate PathIcon or PathIconSource/StreamGeometry\nOptimized SVG must have exactly one element to generate a PathIcon\nCompatible with Avalonia UI, WinUI, Uno Platform",
+		OutputStrategy.PathIcon => "Generate PathIcon or PathIconSource/StreamGeometry\nOptimized SVG must have exactly one element to generate a PathIcon\nCompatible with Avalonia UI, Uno Platform, WinUI",
 		_ => strategy.ToString()
 	};
 	
