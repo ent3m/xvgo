@@ -2,10 +2,10 @@
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
 [![Blazor](https://img.shields.io/badge/Blazor-WASM-512BD4)](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)
-[![Fluent UI](https://img.shields.io/badge/Fluent%20UI-Blazor-0078D4)](https://github.com/microsoft/fluentui-blazor)
+[![Fluent UI](https://img.shields.io/badge/Fluent%20UI-Blazor-007EC6)](https://github.com/microsoft/fluentui-blazor)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.txt)
 
-XVGO, short for **X**AML **V**ector **G**raphic **O**ptimizer, is a WebAssembly app for converting SVG to XAML markup.
+XVGO is an SVG to XAML converter for WPF, Avalonia, WinUI, and Uno Platform.
 
 🌐 **Try it live:** [https://ent3m.github.io/xvgo/](https://ent3m.github.io/xvgo/)
 
@@ -14,7 +14,7 @@ XVGO, short for **X**AML **V**ector **G**raphic **O**ptimizer, is a WebAssembly 
 - **SVG optimization** via SVGO before conversion
 - **Multiple XAML output types**: `Canvas`, `DrawingBrush`, `DrawingImage`, `PathIcon`
 - **Flexible usage context**: `Standalone` or `ResourceDictionary`
-- **Multi-framework support**: Avalonia UI, Uno Platform, WinUI, and WPF
+- **Multi-framework support**: WPF, Avalonia, WinUI, and Uno Platform
 - **Configurable output**: indentation style, single-line or multi-line, resource key
 - **Fully client-side**: runs entirely in the browser — no server, no data sent anywhere
 
@@ -22,7 +22,7 @@ XVGO, short for **X**AML **V**ector **G**raphic **O**ptimizer, is a WebAssembly 
 
 | Feature | Status |
 | :--- | :---: |
-| Paths and basic shapes | ✅ |
+| Basic shapes and paths | ✅ |
 | Fill, stroke, and opacity | ✅ |
 | Hex, named, `rgb`/`rgba` colors | ✅ |
 | Inline and inherited styles/attributes | ✅ |
@@ -33,14 +33,14 @@ XVGO, short for **X**AML **V**ector **G**raphic **O**ptimizer, is a WebAssembly 
 
 ## Supported Frameworks
 
-| Output | Avalonia | Uno* | WinUI | WPF |
+| Output | Avalonia | WPF | WinUI | Uno* |
 | :--- | :---: | :---: | :---: | :---: |
 | `<Canvas>` | ✅ | ✅ | ✅ | ✅ |
-| `<DrawingBrush>` | ✅ | ❌ | ❌ | ✅ |
-| `<DrawingImage>` | ✅ | ❌ | ❌ | ✅ |
-| `<PathIcon>` | ✅ | ✅ | ✅ | ❌ |
+| `<DrawingBrush>` | ✅ | ✅ | ❌ | ❌ |
+| `<DrawingImage>` | ✅ | ✅ | ❌ | ❌ |
+| `<PathIcon>` | ✅ | ❌ | ✅ | ✅ |
 
-*_Uno Platform does not support stroke-linejoin, stroke-linecap, stroke-dasharray, stroke-dasharray._
+*_Uno Platform does not support stroke-linejoin, stroke-linecap, stroke-miterlimit, stroke-dashoffset._
 
 
 `SvgImageSource` is recommended for [Uno Platform](https://platform.uno/docs/articles/features/svg.html) and [WinUI](https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.media.imaging.svgimagesource).
@@ -58,9 +58,25 @@ Generates a `Rectangle` → `DrawingBrush` → `GeometryDrawing` hierarchy. Corr
 Generates an `Image` → `DrawingImage` → `GeometryDrawing` hierarchy. Unlike `DrawingBrush`, `viewBox` padding and offsets are not preserved — content is automatically centered and stretched to fill the available area. Best suited for rendering complex multi-path or multi-color icons.
 
 ### `PathIcon`
-Generates a `PathIcon` for standalone use, or a `PathIconSource`/`StreamGeometry` for `ResourceDictionary`. Best for simple, single-path icons that benefit from color inheritance (e.g., adapting to the foreground color of their parent control).
+Generates a `PathIcon` for standalone use, or a `PathIconSource`/`StreamGeometry` for `ResourceDictionary`. Best for simple, single-path icons that benefit from color inheritance (adapting to the foreground color of their parent control).
 
 ## Which output to choose?
+
+<details>
+<summary><b>WPF</b></summary>
+
+```mermaid
+flowchart TD
+    Start{What type of vector graphic?}
+    
+    Start -->|Icon| DrawingImage
+    
+    Start -->|Logo/Illustration| Animation{Need animations<br/>or complex interactions?}
+    Animation -->|No| DrawingBrush
+    Animation -->|Yes| Canvas
+```
+
+</details>
 
 <details>
 <summary><b>Avalonia UI</b></summary>
@@ -72,22 +88,6 @@ flowchart TD
     Start -->|Icon| Complexity{Is multipath or multicolor?}
     Complexity --> |No| PathIcon
     Complexity --> |Yes| DrawingImage
-    
-    Start -->|Logo/Illustration| Animation{Need animations<br/>or complex interactions?}
-    Animation -->|No| DrawingBrush
-    Animation -->|Yes| Canvas
-```
-
-</details>
-
-<details>
-<summary><b>WPF</b></summary>
-
-```mermaid
-flowchart TD
-    Start{What type of vector graphic?}
-    
-    Start -->|Icon| DrawingImage
     
     Start -->|Logo/Illustration| Animation{Need animations<br/>or complex interactions?}
     Animation -->|No| DrawingBrush
@@ -121,4 +121,4 @@ dotnet run
 
 ## Credits
 
-- [SVGO](https://github.com/svg/svgo) for its optimization tool.
+- [SVGO](https://github.com/svg/svgo) for its optimization tool
