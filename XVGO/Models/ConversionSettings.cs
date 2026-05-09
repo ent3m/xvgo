@@ -41,4 +41,9 @@ public sealed class ConversionSettings
     /// Default value for 'x:Key' when <see cref="Context"/> is <see cref="UsageContext.ResourceDictionary"/>.
     /// </summary>
     public string DefaultKey { get; set; } = "Icon";
+
+    /// <summary>
+    /// Whether to merge paths that spatially overlap.
+    /// </summary>
+    public bool ForceMerge { get; set; } = false;
 }

@@ -33,6 +33,8 @@
 		<FluentTextField Label="Current Color Value" @bind-Value="@Content.CurrentColorValue" title="Color value used when converting 'currentColor' to XAML" />
 
 		<FluentTextField Label="Resource Key" @bind-Value="@Content.DefaultKey" title="Default value for x:Key when output strategy is ResourceDictionary" />
+
+		<FluentCheckbox Label="Force Merge" @bind-Value="@Content.ForceMerge" title="Merge overlapping paths into a single path. May change the appearance of overlapping areas." />
 	</FluentStack>
 </FluentDialogBody>
 
