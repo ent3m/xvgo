@@ -85,7 +85,7 @@ flowchart TD
 flowchart TD
     Start{What type of vector graphic?}
     
-    Start -->|Icon| Complexity{Is multipath or multicolor?}
+    Start -->|Icon| Complexity{Multipath, multicolor,<br/>or stroke-dependent?}
     Complexity --> |No| PathIcon
     Complexity --> |Yes| DrawingImage
     
