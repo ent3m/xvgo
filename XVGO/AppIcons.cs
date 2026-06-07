@@ -53,9 +53,9 @@ internal static class AppIcons
             """) { }
     }
 
-    public class AppIcon : Icon
+    public class XVGO : Icon
     {
-        public AppIcon() : base(nameof(AppIcon), IconVariant.Regular, IconSize.Custom, """
+        public XVGO() : base(nameof(XVGO), IconVariant.Regular, IconSize.Custom, """
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#63b3ed" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 5.15v3.7c0 2.25-.9 3.15-3.15 3.15h-2.7C13.9 12 13 11.1 13 8.85v-3.7C13 2.9 13.9 2 16.15 2h2.7C21.1 2 22 2.9 22 5.15" opacity=".4"/><path d="M11 15.15v3.7C11 21.1 10.1 22 7.85 22h-2.7C2.9 22 2 21.1 2 18.85v-3.7C2 12.9 2.9 12 5.15 12h2.7c2.25 0 3.15.9 3.15 3.15" opacity=".4"/><path d="M22 15c0 3.87-3.13 7-7 7l1.05-1.75"/><path d="M2 9c0-3.87 3.13-7 7-7L7.95 3.75"/><path d="m15.5 4 4 6"/><path d="m15.5 10 4-6"/><path d="M5 19.25c0 .414.336.75.75.75H7a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1H6a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1h1.25a.75.75 0 0 1 .75.75"/></svg>
             """) { }
     }
@@ -92,6 +92,13 @@ internal static class AppIcons
     {
         public Upload() : base(nameof(Upload), IconVariant.Regular, IconSize.Custom, """
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 24 24"><path d="M3 14.25a.75.75 0 0 1 .75.75c0 1.435.002 2.436.103 3.192.099.734.28 1.122.556 1.399.277.277.665.457 1.4.556.754.101 1.756.103 3.191.103h6c1.435 0 2.436-.002 3.192-.103.734-.099 1.122-.28 1.399-.556.277-.277.457-.665.556-1.4.101-.755.103-1.756.103-3.191a.75.75 0 0 1 1.5 0v.055c0 1.367 0 2.47-.116 3.337-.122.9-.38 1.658-.982 2.26s-1.36.86-2.26.982c-.867.116-1.97.116-3.337.116h-6.11c-1.367 0-2.47 0-3.337-.116-.9-.122-1.658-.38-2.26-.982s-.86-1.36-.981-2.26c-.117-.867-.117-1.97-.117-3.337V15a.75.75 0 0 1 .75-.75" opacity=".7"/><path d="M12 2.25a.75.75 0 0 1 .553.244l4 4.375a.75.75 0 1 1-1.107 1.012l-2.696-2.95V16a.75.75 0 0 1-1.5 0V4.932l-2.696 2.95a.75.75 0 0 1-1.108-1.013l4-4.375A.75.75 0 0 1 12 2.25"/></svg>
+            """) { }
+    }
+
+    public class Sparkle : Icon
+    {
+        public Sparkle() : base(nameof(Sparkle), IconVariant.Regular, IconSize.Custom, """
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" opacity=".8" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/></svg>
             """) { }
     }
 }

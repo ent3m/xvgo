@@ -13,6 +13,12 @@
             <FluentLabel Style="font-size: 16px; margin-left: 10px;"><strong>SVG Input</strong></FluentLabel>
             <FluentSpacer />
             <FluentButton Appearance="Appearance.Lightweight"
+                          IconEnd="@(new AppIcons.Sparkle())"
+                          Title="Load Sample SVG"
+                          OnClick="PasteSampleAsync">
+                Demo
+            </FluentButton>
+            <FluentButton Appearance="Appearance.Lightweight"
                           IconEnd="@(new AppIcons.Upload())"
                           Title="Open SVG file"
                           Id="UploadButton">
@@ -28,7 +34,7 @@
         <FluentTextArea @bind-Value="_inputSvg"
                         Placeholder="Paste SVG here..."
                         Spellcheck="false"
-                        Style="opacity: 0.95" />
+                        Style="opacity: 0.96" />
     </FluentStack>
 
     <FluentStack Orientation="Orientation.Vertical" VerticalGap="4" Class="fill-max" Style="grid-column: 3; grid-row: 1;">
@@ -45,8 +51,8 @@
         </FluentStack>
         <FluentTextArea Value="@_convertedXaml"
                         ReadOnly="true"
-                        Placeholder=@PlaceholderXaml
-                        Style="opacity: 0.95" />
+                        Placeholder="XAML will appear here..."
+                        Style="opacity: 0.96" />
     </FluentStack>
 
     <FluentButton Appearance="Appearance.Lightweight"
@@ -71,8 +77,8 @@
         </FluentStack>
         <FluentTextArea Value="@_optimizedSvg"
                         ReadOnly="true"
-                        Placeholder=@PlaceholderSvg
-                        Style="opacity: 0.95" />
+                        Placeholder="Optimized SVG will appear here..."
+                        Style="opacity: 0.96" />
     </FluentStack>
 
     <FluentStack Orientation="Orientation.Vertical" VerticalGap="4" Class="fill-max" Style="grid-column: 3; grid-row: 3;"
@@ -121,6 +127,12 @@
         await ConvertAsync();
     }
 
+    private async Task PasteSampleAsync()
+    {
+        _inputSvg = new AppIcons.XVGO().Content;
+        await ConvertAsync();
+    }
+
     private async Task PasteAndConvertAsync()
     {
         _inputSvg = await ClipboardService.PasteAsync();
@@ -146,16 +158,4 @@
             _convertedXaml = $"Error: {ex.Message}";
         }
     }
-
-    private const string PlaceholderSvg = """
-	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-		<path fill="#87ceeb" d="m10 90 40-80 40 80Z"/>
-	</svg>
-	""";
-
-    private const string PlaceholderXaml = """
-	<Canvas x:Key="Icon" x:Shared="False" Width="100" Height="100">
-	    <Path Fill="#87CEEB" Data="F1 m10 90 40-80 40 80Z" />
-	</Canvas>
-	""";
 }
