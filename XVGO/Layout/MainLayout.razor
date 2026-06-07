@@ -60,7 +60,12 @@
 
     private void OnAppLoaded(LoadedEventArgs args)
     {
-		_version = $" v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3)}" ?? string.Empty;
+        _version = $" v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3)}" ?? string.Empty;
+
+        if (args.Mode == DesignThemeModes.System)
+            _mode = args.IsDark ? DesignThemeModes.Dark : DesignThemeModes.Light;
+        else
+            _mode = args.Mode;
 
         _ = ApplyTheme();
     }
