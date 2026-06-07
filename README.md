@@ -16,7 +16,7 @@ XVGO is an SVG to XAML converter for WPF, Avalonia, WinUI, and Uno Platform.
 - **Flexible usage context**: `Standalone` or `ResourceDictionary`
 - **Multi-framework support**: WPF, Avalonia, WinUI, and Uno Platform
 - **Configurable output**: indentation style, single-line or multi-line, resource key
-- **Lightweight**: AOT-compiled with ~8.1 MB download for native performance
+- **Lightweight**: AOT-compiled for native performance
 - **Fully client-side**: runs entirely in the browser — no server, no data sent anywhere
 
 ### Supported SVG Features
