@@ -16,6 +16,7 @@ XVGO is an SVG to XAML converter for WPF, Avalonia, WinUI, and Uno Platform.
 - **Flexible usage context**: `Standalone` or `ResourceDictionary`
 - **Multi-framework support**: WPF, Avalonia, WinUI, and Uno Platform
 - **Configurable output**: indentation style, single-line or multi-line, resource key
+- **Lightweight**: AOT-compiled with ~8.1 MB download for native performance
 - **Fully client-side**: runs entirely in the browser — no server, no data sent anywhere
 
 ### Supported SVG Features
@@ -58,7 +59,8 @@ Generates a `Rectangle` → `DrawingBrush` → `GeometryDrawing` hierarchy. Corr
 Generates an `Image` → `DrawingImage` → `GeometryDrawing` hierarchy. Unlike `DrawingBrush`, `viewBox` padding and offsets are not preserved — content is automatically centered and stretched to fill the available area. Best suited for rendering complex multi-path or multi-color icons.
 
 ### `PathIcon`
-Generates a `PathIcon` for standalone use, or a `PathIconSource`/`StreamGeometry` for `ResourceDictionary`. Best for simple, single-path icons that benefit from color inheritance (adapting to the foreground color of their parent control).
+Generates a `PathIcon` for standalone use, or a `PathIconSource`/`StreamGeometry` for `ResourceDictionary`. Best for simple, single-path icons that benefit from color inheritance (adapting to the foreground color of their parent control).<br/>
+*Tip*: Enable "Force Merge" to turn multi-path SVG into clean `PathIcon`.
 
 ## Which output to choose?
 
@@ -85,7 +87,7 @@ flowchart TD
 flowchart TD
     Start{What type of vector graphic?}
     
-    Start -->|Icon| Complexity{Is multipath or multicolor?}
+    Start -->|Icon| Complexity{Multipath, multicolor,<br/>or stroke-dependent?}
     Complexity --> |No| PathIcon
     Complexity --> |Yes| DrawingImage
     
